@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/QQGoblin/kmask/pkg/core/encrypt"
+	"github.com/WeiZhang555/tabwriter"
 	"os"
-	"text/tabwriter"
 )
 
 func Export(data, passphrase, output string, all bool) error {
@@ -56,18 +56,19 @@ func loadSecret(filepath, passphrase string) ([]*Secret, error) {
 }
 
 func printSecret(secrets []*Secret) {
-	w := tabwriter.NewWriter(os.Stdout, 10, 0, 5, ' ', tabwriter.TabIndent)
+	w := tabwriter.NewWriter(os.Stdout, 20, 0, 5, ' ', tabwriter.TabIndent)
 	fmt.Fprintln(w, "UID\tKey\tValue")
 	for _, secret := range secrets {
 		firstLine := true
-
 		f := func(key, value string) {
+			uid := " "
 			if firstLine {
-				fmt.Fprintf(w, "%s\t%s\t%s\n", secret.UID, key, value)
+				uid = secret.UID
 				firstLine = false
-				return
 			}
-			fmt.Fprintf(w, "%s\t%s\t%s\n", " ", key, value)
+			// TODO: 这里golang原生tabwriter，不能正确计算中文字符的宽度，因此使用一个第三方的库
+			// 具体参考：https://github.com/golang/go/issues/12073，https://github.com/golang/go/issues/13989
+			fmt.Fprintf(w, "%s\t%s\t%s\n", uid, key, value)
 		}
 
 		for k, v := range secret.Keys {
