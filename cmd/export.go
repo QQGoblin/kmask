@@ -15,7 +15,7 @@ var (
 func init() {
 	ExportCommand.PersistentFlags().StringVarP(&data, "database", "d", core.DefaultDBName, "secret database file")
 	ExportCommand.PersistentFlags().StringVarP(&expassphrase, "passphrase", "p", "", "passphrase for secret database file")
-	ExportCommand.PersistentFlags().StringVarP(&output, "output", "o", "output", "output directory")
+	ExportCommand.PersistentFlags().StringVarP(&output, "output", "o", "", "output directory")
 	ExportCommand.PersistentFlags().BoolVar(&all, "all", false, "export all secret to json file")
 }
 

@@ -93,7 +93,8 @@ func (f *KMaskData) Export(output string) error {
 
 	}
 	outConfig := filepath.Join(output, DefaultExportConfigName)
-	b, err := json.Marshal(copySecrets)
+	outKMask := KMaskData{Secrets: copySecrets}
+	b, err := json.Marshal(outKMask)
 	if err != nil {
 		return err
 	}
